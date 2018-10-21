@@ -7,10 +7,10 @@
 void print_s(va_list list)
 {
 	char *str;
-	int index;
+	int i;
 
 	str = va_arg(list, char *);
 
-	for (index = 0; str[index]; index++)
-		write(1, str, 1);
+	for (i = 0; *(str + i); i++)
+		write(1, (str + i), 1);
 }
