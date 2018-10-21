@@ -10,8 +10,9 @@
  * @letter: A conversion specifier.
  * @f: A function pointer to a print function corresponding to letter.
  */
-typedef struct formatter {
-	char * letter;
+typedef struct formatter
+{
+	char *letter;
 	void (*f)(va_list list);
 } format_me;
 
