@@ -2,26 +2,28 @@
 
 /**
  * _printf - does wonderful things
- * @format: character string that contains directives of how to print
+ * @format: Character string to print - may contain directives.
+ *
  * Return: 0 on success
  */
-
 int _printf(const char *format, ...)
 {
-	int i;
 	va_list args;
+	int ret;
 
 	va_start(args, format);
 
-	for (i = 0; *(format + i) != '\0'; i++)
+	for (ret = 0; *(format + ret); ret++)
 	{
-		if (*(format + i) == '%')
+		if (*(format + ret) == '%')
 		{
-			converter(format + ++i)(args);
-		} else
-		{
-			write(1, format + i, 1);
+			ret++;
+			converter(format + ret)(args);
 		}
+
+		else
+			write(1, (format + ret), 1);
 	}
-	return (0);
+
+	return (ret);
 }
