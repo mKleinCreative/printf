@@ -9,20 +9,25 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int ret;
+	int i, ret = 0;
 
 	va_start(args, format);
 
-	for (ret = 0; *(format + ret); ret++)
+	for (i = 0; *(format + i); i++)
 	{
-		if (*(format + ret) == '%')
+		if (*(format + i) == '%')
 		{
-			ret++;
-			converter(format + ret)(args);
+			i++;
+
+			if (*(format + i) != '%')
+			{
+				converter(format + i)(args);
+				continue;
+			}
 		}
 
-		else
-			write(1, (format + ret), 1);
+		write(1, (format + i), 1);
+		ret++;
 	}
 
 	return (ret);
