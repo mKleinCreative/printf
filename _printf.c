@@ -10,12 +10,11 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	char *buffer, *buffer_ptr;
-	int i, ret = 0, add = 0;
+	int i, ret = 0, add = 1;
 
 	buffer = malloc(sizeof(char) * 1024);
 	if (buffer == NULL)
 		exit(1);
-
 	buffer_ptr = buffer;
 
 	va_start(args, format);
@@ -24,19 +23,20 @@ int _printf(const char *format, ...)
 	{
 		if (*(format + i) == '%')
 		{
-			i++;
-
-			if (*(format + i) != '%')
+			if (converter(format + i + 1))
 			{
-				add = converter(format + i)(args, buffer);
-				ret += add;
-				buffer += add;
 				i++;
+				if (converter(format + i))
+				{
+					add = converter(format + i)(args, buffer);
+					ret += add;
+					buffer += add;
+					i++;
+				}
 			}
 		}
 
 		*buffer = *(format + i);
-
 		ret++;
 		buffer++;
 	}

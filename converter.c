@@ -13,16 +13,15 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 		{"s", print_s},
 		{"d", print_d},
 		{"i", print_i},
-		{NULL, NULL}
+		{"%", print_percent}
 	};
 	int i;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 5; i++)
 	{
 		if (*symbol == *(func[i].letter))
 			return (func[i].f);
 	}
 
-	write(2, "conversion specifier lacks type at end of format", 48);
-	exit(1);
+	return (NULL);
 }
