@@ -10,11 +10,20 @@
 int print_s(va_list list, char *buffer)
 {
 	char *str;
+	char *null = "(null)";
 	int i;
 
 	str = va_arg(list, char *);
 	if (str == NULL)
-		exit(1);
+	{
+		for (i = 0; *(null + i); i++)
+		{
+			*buffer = *(null + i);
+			buffer++;
+		}
+
+		return (6);
+	}
 
 	for (i = 0; *(str + i); i++)
 	{
