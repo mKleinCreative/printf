@@ -6,7 +6,7 @@
  *
  * Return: A function pointer to the function matched by symbol.
  */
-void (*converter(const char *symbol))(va_list list)
+void (*converter(const char *symbol))(const char* format, int spec_list, va_list list)
 {
 	format_me func[] = {
 		{"c", print_c},
