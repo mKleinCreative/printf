@@ -13,7 +13,6 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 		{"s", print_s},
 		{"d", print_d},
 		{"i", print_i},
-		{NULL, NULL}
 	};
 	int i;
 
@@ -23,6 +22,5 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 			return (func[i].f);
 	}
 
-	write(2, "conversion specifier lacks type at end of format", 48);
-	exit(1);
+	return (NULL);
 }
