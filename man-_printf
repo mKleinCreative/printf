@@ -1,0 +1,19 @@
+.TH man 2 "September 2018" "0.1" "printf man page"
+.SH NAME
+.B holberton
+- Implementation of the printf function.
+.SH SYNOPSIS
+.B printf
+.I FORMAT
+.I [ARGUMENT]...
+.SH DESCRIPTION
+Print ARGUMENT(s) according to FORMAT
+.SH OPTIONS
+.B printf
+does not take any options yet. wip
+.SH SEE ALSO
+.I man 3 printf()
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Brennan Michael
