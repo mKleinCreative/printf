@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 /**
- * formatter - A new type describing a formatter.
+ * struct formatter - A new type describing a formatter.
  * @letter: A conversion specifier.
  * @f: A function pointer to a print function corresponding to letter.
  */
