@@ -13,10 +13,11 @@ void (*converter(const char *symbol))(va_list list)
 		{"s", print_s},
 		{"d", print_d},
 		{"i", print_i}
+		{NULL, NULL}
 	};
 	int i;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i != NULL; i++)
 	{
 		if (*symbol == *(func[i].letter))
 			return (func[i].f);
