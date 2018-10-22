@@ -6,7 +6,7 @@
  *
  * Return: A function pointer to the function matched by symbol.
  */
-void (*converter(const char *symbol))(va_list list)
+int (*converter(const char *symbol))(va_list list, char *buffer)
 {
 	format_me func[] = {
 		{"c", print_c},
@@ -15,31 +15,14 @@ void (*converter(const char *symbol))(va_list list)
 		{"i", print_i},
 		{NULL, NULL}
 	};
-	int i, max;
+	int i;
 
-	i = 0, max = sizeof(func)/sizeof(func[0]);
-
-	for (; i < max ; ++i)
+	for (i = 0; i < 4; i++)
 	{
 		if (*symbol == *(func[i].letter))
 			return (func[i].f);
 	}
-	/*
-	switch (symbol) {
-		case 'c':
-			print_c(list);
-			break;
-		case 's':
-			print_s(list);;
-			break;
-		case 'd':
-			print_d(list);;
-			break;
-		case 'i':
-			print_i(list);;
-			break;
-	}
-	*/
+
 	write(2, "conversion specifier lacks type at end of format", 48);
 	exit(1);
 }
