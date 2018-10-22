@@ -4,16 +4,23 @@
  * _printf - does wonderful things
  * @format: Character string to print - may contain directives.
  *
- * Return: 0 on success
+ * Return: The number of character printed.
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i, ret = 0;
+	char *buffer, *buffer_ptr;
+	int i, ret = 0, add = 0;
+
+	buffer = malloc(sizeof(char) * 1024);
+	if (buffer == NULL)
+		exit(1);
+
+	buffer_ptr = buffer;
 
 	va_start(args, format);
 
-	for (i = 0; *(format + i); i++)
+	for (i = 0; format && *(format + i); i++)
 	{
 		if (*(format + i) == '%')
 		{
@@ -21,14 +28,24 @@ int _printf(const char *format, ...)
 
 			if (*(format + i) != '%')
 			{
-				converter(format + i)(args);
-				continue;
+				add = converter(format + i)(args, buffer);
+				ret += add;
+				buffer += add;
+				i++;
 			}
 		}
 
-		write(1, (format + i), 1);
+		*buffer = *(format + i);
+
 		ret++;
+		buffer++;
 	}
+	*buffer = '\0';
+
+	write(1, buffer_ptr, ret);
+
+	va_end(args);
+	free(buffer_ptr);
 
 	return (ret);
 }

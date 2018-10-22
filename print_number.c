@@ -3,22 +3,14 @@
 /**
  * print_number - Prints an integer.
  * @n: The integer to be printed.
+ * @buffer: A character buffer to store the integer.
  */
-void print_number(int n)
+void print_number(int n, char *buffer)
 {
 	unsigned int num = n;
-	char neg = '-';
-	char digit;
-
-	if (n < 0)
-	{
-		write(1, &neg, 1);
-		num = -num;
-	}
 
 	if ((num / 10) > 0)
-		print_number(num / 10);
+		print_number((num / 10), buffer - 1);
 
-	digit = (num % 10) + '0';
-	write(1, &digit, 1);
+	*buffer = (num % 10) + '0';
 }
