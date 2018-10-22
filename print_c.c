@@ -11,6 +11,9 @@ void print_c(va_list list)
 	char ch;
 
 	ch = va_arg(list, int);
-
+	if (!ch)
+	{
+		exit(1);
+	}
 	write(1, &ch, 1);
 }
