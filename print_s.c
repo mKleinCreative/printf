@@ -10,7 +10,8 @@ void print_s(va_list list)
 	int i;
 
 	str = va_arg(list, char *);
-
+	if (!str)
+		exit(1);
 	for (i = 0; *(str + i); i++)
 		write(1, (str + i), 1);
 }
