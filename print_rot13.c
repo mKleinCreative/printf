@@ -23,8 +23,8 @@ int print_rot13(va_list list, char *buffer)
 		return (6);
 	}
 	length = 0;
-	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM1234567890";
+	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 	for (i = 0; ch[i] != '\0'; i++)
 	{
 		if (ch[i] == ' ')
@@ -32,10 +32,7 @@ int print_rot13(va_list list, char *buffer)
 			*buffer = ' ';
 			buffer++;
 			length++;
-			if (ch[i] != '\0')
-				continue;
-			else
-				break;
+			continue;
 		}
 		for (j = 0; alphabet[j] != '\0'; j++)
 		{
@@ -44,6 +41,11 @@ int print_rot13(va_list list, char *buffer)
 				*buffer = rot13[j];
 				buffer++;
 				break;
+			}
+			if (alphabet[j] == 'Z')
+			{
+				*buffer = ch[i];
+				buffer++;
 			}
 		}
 		length++;
