@@ -16,8 +16,17 @@ int print_i(va_list list, char *buffer)
 	if (i < 0)
 	{
 		*buffer = '-';
-		buffer++;
-		i = -i;
+		digits++;
+
+		if (i == -2147483648)
+		{
+			*(buffer + 1) = '2';
+			digits++;
+			i = 147483648;
+		}
+
+		else
+			i = -i;
 	}
 
 	i_cpy = i;

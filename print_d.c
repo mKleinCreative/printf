@@ -17,7 +17,16 @@ int print_d(va_list list, char *buffer)
 	{
 		*buffer = '-';
 		digits++;
-		d = -d;
+
+		if (d == -2147483648)
+		{
+			*(buffer + 1) = '2';
+			digits++;
+			d = 147483648;
+		}
+
+		else
+			d = -d;
 	}
 
 	d_cpy = d;
