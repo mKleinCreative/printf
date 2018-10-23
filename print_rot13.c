@@ -23,8 +23,8 @@ int print_rot13(va_list list, char *buffer)
 		return (6);
 	}
 	length = 0;
-	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
+	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM1234567890";
 	for (i = 0; ch[i] != '\0'; i++)
 	{
 		if (ch[i] == ' ')
