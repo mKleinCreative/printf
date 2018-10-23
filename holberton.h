@@ -21,8 +21,7 @@ int (*converter(const char *symbol))(va_list list, char *buffer);
 void print_number(int n, char *buffer);
 int print_c(va_list list, char *buffer);
 int print_s(va_list list, char *buffer);
-int print_d(va_list list, char *buffer);
-int print_i(va_list list, char *buffer);
+int print_di(va_list list, char *buffer);
 int print_percent(va_list list, char *buffer);
 
 #endif
