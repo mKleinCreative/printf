@@ -29,21 +29,20 @@ int print_rot13(va_list list, char *buffer)
 	{
 		if (ch[i] == ' ')
 		{
-			*buffer = ' ';
-			buffer++;
+			*buffer++ = ' ';
 			length++;
-			if (ch[i] != '\0')
-				continue;
-			else
-				break;
+			continue;
 		}
 		for (j = 0; alphabet[j] != '\0'; j++)
 		{
 			if (ch[i] == alphabet[j])
 			{
-				*buffer = rot13[j];
-				buffer++;
+				*buffer++ = rot13[j];
 				break;
+			}
+			if (alphabet[j] == 'Z')
+			{
+				*buffer++ = ch[i];
 			}
 		}
 		length++;
