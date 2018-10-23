@@ -12,7 +12,7 @@ int print_c(va_list list, char *buffer)
 	char ch;
 
 	ch = va_arg(list, int);
-	if (ch == '\0' || ch < 32 || ch > 126)
+	if (ch == '\0')
 		return (0);
 
 	*buffer = ch;
