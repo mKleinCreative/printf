@@ -18,7 +18,7 @@ int print_rev(va_list list, char *buffer)
 	rev = va_arg(list, char *);
 	if (rev == NULL)
 	{
-		for(i = 0; *(null + i); i++)
+		for (i = 0; *(null + i); i++)
 		{
 			*buffer = *(null + i);
 			buffer++;

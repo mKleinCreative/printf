@@ -15,7 +15,7 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 		{"i", print_di},
 		{"%", print_percent},
 		{"r", print_rev},
-		{"b", print_b},
+		{"b", print_b}
 	};
 	int i;
 
