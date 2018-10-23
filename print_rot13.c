@@ -29,8 +29,7 @@ int print_rot13(va_list list, char *buffer)
 	{
 		if (ch[i] == ' ')
 		{
-			*buffer = ' ';
-			buffer++;
+			*buffer++ = ' ';
 			length++;
 			continue;
 		}
@@ -38,14 +37,12 @@ int print_rot13(va_list list, char *buffer)
 		{
 			if (ch[i] == alphabet[j])
 			{
-				*buffer = rot13[j];
-				buffer++;
+				*buffer++ = rot13[j];
 				break;
 			}
 			if (alphabet[j] == 'Z')
 			{
-				*buffer = ch[i];
-				buffer++;
+				*buffer++ = ch[i];
 			}
 		}
 		length++;
