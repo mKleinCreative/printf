@@ -13,13 +13,12 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 		{"s", print_s},
 		{"d", print_di},
 		{"i", print_di},
-		{"%", print_percent}
-		{"r", print_rev}
-		{"b", print_bi}
+		{"%", print_percent},
+		{"b", print_b},
 	};
 	int i;
 
-	for (i = 0; i < 7; i++)
+	for (i = 0; i < 6; i++)
 	{
 		if (*symbol == *(func[i].letter))
 			return (func[i].f);
