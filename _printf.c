@@ -10,40 +10,40 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	char *buffer, *buffer_ptr;
-	int i, ret = 0, add = 1;
+	int i, ret, len = 0, add = 0;
 
 	buffer = malloc(sizeof(char) * 1024);
-	if (buffer == NULL)
-		exit(1);
+	if (buffer == NULL || format == NULL)
+		return (-1);
 	buffer_ptr = buffer;
 
 	va_start(args, format);
-	for (i = 0; format && *(format + i); i++)
+	for (i = 0; *(format + i); i++)
 	{
 		if (*(format + i) == '%')
 		{
-			if (*(format + i + 1) == '\0' ||
-			    converter(format + i + 1))
+			if (*(format + i + 1) == '\0')
+			{
+				ret = -1;
+				break;
+			}
+			if (converter(format + i + 1))
 			{
 				i++;
-				if (converter(format + i))
-				{
-					add = converter(format + i)(args, buffer);
-					ret += add;
-					buffer += add;
-
-					if (*(format + i + 1) != '%')
-						i++;
-				}
+				add = converter(format + i)(args, buffer);
+				buffer += add;
+				len += add;
+				ret = len;
+				continue;
 			}
 		}
 		*buffer = *(format + i);
-		ret++;
+		len++;
 		buffer++;
+		ret = len;
 	}
-	*buffer = '\0';
 
-	write(1, buffer_ptr, ret);
+	write(1, buffer_ptr, len);
 	va_end(args);
 	free(buffer_ptr);
 
