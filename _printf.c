@@ -18,12 +18,12 @@ int _printf(const char *format, ...)
 	buffer_ptr = buffer;
 
 	va_start(args, format);
-
 	for (i = 0; format && *(format + i); i++)
 	{
 		if (*(format + i) == '%')
 		{
-			if (converter(format + i + 1))
+			if (*(format + i + 1) == '\0' ||
+			    converter(format + i + 1))
 			{
 				i++;
 				if (converter(format + i))
@@ -31,11 +31,12 @@ int _printf(const char *format, ...)
 					add = converter(format + i)(args, buffer);
 					ret += add;
 					buffer += add;
-					i++;
+
+					if (*(format + i + 1) != '%')
+						i++;
 				}
 			}
 		}
-
 		*buffer = *(format + i);
 		ret++;
 		buffer++;
@@ -43,7 +44,6 @@ int _printf(const char *format, ...)
 	*buffer = '\0';
 
 	write(1, buffer_ptr, ret);
-
 	va_end(args);
 	free(buffer_ptr);
 
