@@ -11,8 +11,8 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 	format_me func[] = {
 		{"c", print_c},
 		{"s", print_s},
-		{"d", print_d},
-		{"i", print_i},
+		{"d", print_di},
+		{"i", print_di},
 		{"%", print_percent}
 	};
 	int i;
