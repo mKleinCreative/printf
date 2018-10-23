@@ -9,11 +9,11 @@
  */
 int print_c(va_list list, char *buffer)
 {
-	char ch;
+	unsigned char ch;
 
 	ch = va_arg(list, int);
 	if (ch == '\0')
-		return (0);
+		return (1);
 
 	*buffer = ch;
 	return (1);
