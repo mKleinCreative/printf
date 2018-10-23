@@ -23,5 +23,7 @@ int print_c(va_list list, char *buffer);
 int print_s(va_list list, char *buffer);
 int print_di(va_list list, char *buffer);
 int print_percent(va_list list, char *buffer);
+int print_rev(va_list list, char *buffer);
+int print_bi(va_list list, char *buffer);
 
 #endif
