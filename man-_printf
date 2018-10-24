@@ -1,19 +1,76 @@
-.TH man 2 "September 2018" "0.1" "printf man page"
+.TH _PRINTF 2 "October 2018" "0.1" "Holberton School 0x10. C - _printf"
 .SH NAME
-.B holberton
-- Implementation of the printf function.
+.B _printf\fR \- formatted output conversion
 .SH SYNOPSIS
-.B printf
-.I FORMAT
-.I [ARGUMENT]...
+.B #include \fB"holberton.h"
+
+.B int printf(const char *\fIformat\fB, ...);
 .SH DESCRIPTION
-Print ARGUMENT(s) according to FORMAT
-.SH OPTIONS
-.B printf
-does not take any options yet. wip
-.SH SEE ALSO
-.I man 3 printf()
+The function
+\fB_printf()\fR writes output to \fIstdout\fR, the standard output. The function writes the output under the control of a \fIformat\fR string that specifies how subsequent arguments (accessed via the variable-length argument facilities of stdarg) are converted for output.
+
+.B Return value
+
+Upon successful return, \fB_printf()\fR returns the number of characters printed (excluding the null byte used to end output to strings).
+
+If an output error is encountered, a negative value is returned.
+
+.B Format of the format string
+
+The format string is a constant character string composed of zero or more directives: ordinary characters (not \fB%\fR) which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments. Conversion specification is introduced by the character \fB%\fR and ends with a \fIconversion specifier\fR. The arguments must correspond with the conversion specifier. By default, the arguments are used in the order given.
+
+.B The conversion specifier
+
+A character that specifies the type of conversion to be applied. The conversion specifiers and their meaning are:
+
+.B d, i
+
+The \fIint\fR argument is converted to signed decimal notation.
+
+.B b
+
+The \fIunsigned int\fR argument is converted to binary.
+
+.B o, u, x, X
+
+The \fIunsigned int\fR argument is converted to unsigned octal (\fBo\fR), unsigned decimal (\fBu\fR), or unsigned hexadecimal (\fBx\fR and \fBX\fR) notation. The letters \fBabcdef\fR are used for \fBx\fR are used for \fBx\fR conversions; the letters \fBABCDEF\fR are used for \fBX\fR conversions.
+
+.B c
+
+The \fIint\fR argument is converted to an \fIunsigned char\fR, and the resulting character is written.
+
+.B s
+
+The \fIconst char *\fR argument is expected to be a pointer to a character array (pointer to a string). Characters from the array are written up to (but not including) a terminating null byte ('\\0').
+
+.B r
+
+The \fIconst char *\fR argument is expected to be a pointer to a character array (pointer to a string). Characters from the array are written in reverse, from (but not including) the terminating null byte ('\\0') to the first element of the array.
+
+.B R
+
+The \fIconst char *\fR argument is expected to be a pointer to a character array (pointer to a string). Characters from the array are written up to (but not including) the terminating null byte ('\\0') in ROT13.
+
+.B %
+
+A '%' is written. No argument is converted. The complete conversion specification is '%%'.
+
 .SH BUGS
-No known bugs.
+Code such as \fB_printf(\fIfoo\fB);\fR possibly indicates a bug, since \fIfoo\fR may contain a % character.
+
+.SH EXAMPLE
+
+To print a date in the form "Wednesday, October 23, 2018", followed by a new line, where \fIweekday\fR and \fImonth\fR are pointers to strings:
+
+.RS
+#include "holberton.h"
+
+printf("%s, %s %d, %d\\n", "Wednesday", "October", 23, 2018);
+.RE
+
+.SH SEE ALSO
+printf(3)
+
+The \fB_printf()\fR function emulates functionality of the C standard library function \fBprintf()\fR. This man page borrows from the corresponding Linux man page printf(3).
 .SH AUTHOR
-Brennan Michael
+Brennan D Baraban and Michael Klein

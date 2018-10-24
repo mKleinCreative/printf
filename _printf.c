@@ -10,42 +10,42 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	char *buffer, *buffer_ptr;
-	int i, ret = 0, add = 1;
+	int i, percents = 0, ret, len = 0, add = 0;
 
 	buffer = malloc(sizeof(char) * 1024);
-	if (buffer == NULL)
-		exit(1);
+	if (buffer == NULL || format == NULL)
+		return (-1);
 	buffer_ptr = buffer;
 
 	va_start(args, format);
-
-	for (i = 0; format && *(format + i); i++)
+	for (i = 0; *(format + i); i++)
 	{
 		if (*(format + i) == '%')
 		{
+			percents++;
 			if (converter(format + i + 1))
 			{
 				i++;
-				if (converter(format + i))
-				{
-					add = converter(format + i)(args, buffer);
-					ret += add;
-					buffer += add;
-					i++;
-				}
+				add = converter(format + i)(args, buffer);
+				buffer += add;
+				len += add;
+				ret = len;
+				percents--;
+				continue;
+			}
+			if (*(format + i + 1) == '\0' && percents == 1)
+			{
+				ret = -1;
+				break;
 			}
 		}
-
 		*buffer = *(format + i);
-		ret++;
+		len++;
 		buffer++;
+		ret = len;
 	}
-	*buffer = '\0';
-
-	write(1, buffer_ptr, ret);
-
+	write(1, buffer_ptr, len);
 	va_end(args);
 	free(buffer_ptr);
-
 	return (ret);
 }

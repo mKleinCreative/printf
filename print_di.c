@@ -1,13 +1,13 @@
 #include "holberton.h"
 
 /**
- * print_d - Prints an integer.
+ * print_di - Prints an integer.
  * @list: A va_list pointing to the integer to be printed.
  * @buffer: A character buffer storing the overall string to print.
  *
  * Return: The number of characters stored to buffer.
  */
-int print_d(va_list list, char *buffer)
+int print_di(va_list list, char *buffer)
 {
 	int d, d_cpy, digits = 1;
 
@@ -17,7 +17,15 @@ int print_d(va_list list, char *buffer)
 	{
 		*buffer = '-';
 		digits++;
-		d = -d;
+
+		if (d == -2147483648)
+		{
+			*(buffer + 1) = '2';
+			digits++;
+			d = 147483648;
+		}
+		else
+			d = -d;
 	}
 
 	d_cpy = d;

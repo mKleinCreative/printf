@@ -7,7 +7,7 @@
  */
 void print_number(int n, char *buffer)
 {
-	unsigned int num = n;
+	int num = n;
 
 	if ((num / 10) > 0)
 		print_number((num / 10), buffer - 1);
