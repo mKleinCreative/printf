@@ -22,6 +22,8 @@ void print_number(int n, char *buffer);
 int print_c(va_list list, char *buffer);
 int print_s(va_list list, char *buffer);
 int print_di(va_list list, char *buffer);
+int print_u(va_list list, char *buffer);
+int print_o(va_list list, char *buffer);
 int print_percent(va_list list, char *buffer);
 int print_b(va_list list, char *buffer);
 int print_rev(va_list list, char *buffer);

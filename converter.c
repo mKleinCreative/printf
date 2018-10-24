@@ -14,13 +14,15 @@ int (*converter(const char *symbol))(va_list list, char *buffer)
 		{"d", print_di},
 		{"i", print_di},
 		{"%", print_percent},
+		{"u", print_u},
+		{"o", print_o},
 		{"r", print_rev},
 		{"b", print_b},
 		{"R", print_rot13}
 	};
 	int i;
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 9; i++)
 	{
 		if (*symbol == *(func[i].letter))
 			return (func[i].f);
