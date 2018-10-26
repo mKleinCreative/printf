@@ -1,51 +1,57 @@
+/*
+ * File: _printf.c
+ * Auth: Brennan D Baraban
+ *       Michael Klein
+ */
+
 #include "holberton.h"
 
 /**
- * _printf - does wonderful things
+ * _printf - Outputs a formatted string.
  * @format: Character string to print - may contain directives.
  *
- * Return: The number of character printed.
+ * Return: The number of characters printed.
  */
 int _printf(const char *format, ...)
 {
+	buffer_t *output;
 	va_list args;
-	char *buffer, *buffer_ptr;
-	int i, percents = 0, ret, len = 0, add = 0;
+	int i, ret = 0;
+	char ch;
 
-	buffer = malloc(sizeof(char) * 1024);
-	if (buffer == NULL || format == NULL)
+	if (format == NULL)
 		return (-1);
-	buffer_ptr = buffer;
+
+	output = init_buffer();
+	if (output == NULL)
+		return (-1);
 
 	va_start(args, format);
+
 	for (i = 0; *(format + i); i++)
 	{
 		if (*(format + i) == '%')
 		{
-			percents++;
-			if (converter(format + i + 1))
+			if (convert(format + i + 1) != NULL)
 			{
 				i++;
-				add = converter(format + i)(args, buffer);
-				buffer += add;
-				len += add;
-				ret = len;
-				percents--;
+				ret += convert(format + i)(args, output);
 				continue;
 			}
-			if (*(format + i + 1) == '\0' && percents == 1)
+			if (*(format + i + 1) == '\0')
 			{
 				ret = -1;
 				break;
 			}
 		}
-		*buffer = *(format + i);
-		len++;
-		buffer++;
-		ret = len;
+
+		ch = *(format + i);
+		ret += _memcpy(output, &ch, 1);
 	}
-	write(1, buffer_ptr, len);
+
+	write(1, output->start, output->len);
 	va_end(args);
-	free(buffer_ptr);
+	free_buffer(output);
+
 	return (ret);
 }
