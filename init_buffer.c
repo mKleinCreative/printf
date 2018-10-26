@@ -8,13 +8,26 @@
 
 /**
  * init_buffer - Initializes a variable of struct type buffer_t.
- * @output: The buffer_t to be initialized.
+ *
+ * Return: A pointer to the initialized buffer_t.
  */
-void init_buffer(buffer_t *output)
+buffer_t *init_buffer(void)
 {
+	buffer_t *output;
+
+	output = malloc(sizeof(buffer_t));
+	if (output == NULL)
+		return (NULL);
+
 	output->buffer = malloc(sizeof(char) * 1024);
 	if (output->buffer == NULL)
-		return;
+	{
+		free(output);
+		return (NULL);
+	}
+
 	output->start = output->buffer;
 	output->len = 0;
+
+	return (output);
 }

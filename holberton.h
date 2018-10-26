@@ -52,7 +52,8 @@ int convert_r(va_list args, buffer_t *output);
 int convert_R(va_list args, buffer_t *output);
 
 /* Helper Functions */
-void init_buffer(buffer_t *output);
+buffer_t *init_buffer(void);
+void free_buffer(buffer_t *output);
 int (*convert(const char *specifier))(va_list, buffer_t *);
 int _memcpy(buffer_t *output, char *src, unsigned int n);
 int convert_sbase(buffer_t *output, int num, char *base);

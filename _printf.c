@@ -14,7 +14,7 @@
  */
 int _printf(const char *format, ...)
 {
-	buffer_t output;
+	buffer_t *output;
 	va_list args;
 	int i, ret = 0;
 	char ch;
@@ -22,8 +22,8 @@ int _printf(const char *format, ...)
 	if (format == NULL)
 		return (-1);
 
-	init_buffer(&output);
-	if (output.buffer == NULL)
+	output = init_buffer();
+	if (output == NULL)
 		return (-1);
 
 	va_start(args, format);
@@ -35,7 +35,7 @@ int _printf(const char *format, ...)
 			if (convert(format + i + 1) != NULL)
 			{
 				i++;
-				ret += convert(format + i)(args, &output);
+				ret += convert(format + i)(args, output);
 				continue;
 			}
 			if (*(format + i + 1) == '\0')
@@ -46,12 +46,12 @@ int _printf(const char *format, ...)
 		}
 
 		ch = *(format + i);
-		ret += _memcpy(&output, &ch, 1);
+		ret += _memcpy(output, &ch, 1);
 	}
 
-	write(1, output.start, output.len);
+	write(1, output->start, output->len);
 	va_end(args);
-	free(output.start);
+	free_buffer(output);
 
 	return (ret);
 }
