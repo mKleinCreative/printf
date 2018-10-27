@@ -20,11 +20,5 @@ int convert_c(va_list args, buffer_t *output)
 
 	c = va_arg(args, int);
 
-	if (!c)
-	{
-		(output->buffer)++;
-		return (1);
-	}
-
 	return (_memcpy(output, &c, 1));
 }
