@@ -47,6 +47,7 @@ int convert_u(va_list args, buffer_t *output);
 int convert_o(va_list args, buffer_t *output);
 int convert_x(va_list args, buffer_t *output);
 int convert_X(va_list args, buffer_t *output);
+int convert_S(va_list args, buffer_t *output);
 int convert_p(va_list args, buffer_t *output);
 int convert_r(va_list args, buffer_t *output);
 int convert_R(va_list args, buffer_t *output);

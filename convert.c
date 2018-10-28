@@ -28,6 +28,7 @@ int (*convert(const char *specifier))(va_list, buffer_t *)
 		{'o', convert_o},
 		{'x', convert_x},
 		{'X', convert_X},
+		{'S', convert_S},
 		{'p', convert_p},
 		{'r', convert_r},
 		{'R', convert_R},
