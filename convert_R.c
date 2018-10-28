@@ -16,13 +16,12 @@
  */
 int convert_R(va_list args, buffer_t *output)
 {
-	char *alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char *alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char *rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 	char *str, *null = "(null)";
 	int i, j, len;
 
 	str = va_arg(args, char *);
-
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
 
@@ -31,16 +30,16 @@ int convert_R(va_list args, buffer_t *output)
 
 	for (i = 0; i < len; i++)
 	{
-		for (j = 0; j < 26; j++)
+		for (j = 0; j < 52; j++)
 		{
-			if (*(str + i) == *(alphabet + j))
+			if (*(str + i) == *(alpha + j))
 			{
 				_memcpy(output, (rot13 + j), 1);
 				break;
 			}
 		}
 
-		if (j == 26)
+		if (j == 52)
 			_memcpy(output, (str + i), 1);
 	}
 
