@@ -15,7 +15,7 @@ The `format` string argument is a constant character string composed of zero or 
 
 The conversion specifier (introduced by the character `%`) is a character that specifies the type of conversion to be applied. The conversion specifiers and their meaning are:
 
-* **d,i**
+* **d, i**
 
 The `int` argument is converted to signed decimal notation.
 
@@ -23,7 +23,7 @@ The `int` argument is converted to signed decimal notation.
 
 The `unsigned int` argument is converted to signed decimal notation.
 
-* **o,u,x,X**
+* **o, u, x, X**
 
 The `unsigned int` argument is converted to unsigned octal (`o`), unsigned decimal (`u`), or unsigned hexadecimal (`x` and `X`). The letters `abcdef` are used for `x` conversions and the letters `ABCDEF` are used for `X` conversions.
 
@@ -57,7 +57,9 @@ To print the address of Holberton School in the format "972 Mission St., San Fra
 > `#include "holberton.h"`
 >
 > `int main(void)`
+>
 > `char *street = "Mission St.", *city = "San Francisco", *state = "CA";`
+>
 > `printf("%d %s, %s, %s %d\n", 972, street, city, state, 94103);`
 
 Output in terminal:
