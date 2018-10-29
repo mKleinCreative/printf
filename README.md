@@ -8,7 +8,7 @@ The function `_printf` writes output to standard output. The function writes the
 ### Return Value
 Upon successful return, `_printf` returns the number of characters printed (excluding the terminating null byte used to end output to strings). If an output error is encountered, the function returns `-1`.
 
-### Format of the String Argument
+### Format of the Argument String
 The `format` string argument is a constant character string composed of zero or more directives: ordinary characters (not `%`) which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments. Conversion specification is introduced by the character `%` and ends with a conversion specifier. The arguments must correspond with the conversion specifier, and are used in the order given.
 
 ### Conversion Specifiers
