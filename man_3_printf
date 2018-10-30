@@ -43,6 +43,10 @@ The \fIint\fR argument is converted to an \fIunsigned char\fR, and the resulting
 
 The \fIconst char *\fR argument is expected to be a pointer to a character array (pointer to a string). Characters from the array are written starting from the first element of the array and ending at, but not including, the terminating null byte ('\\0').
 
+.B S
+
+Identical to the \fBS\fR conversion specifier, except any non-printable characters in the array (ie. characters with an ASCII value < 32 or >= 127) are written as \fB\\x\fR followed by the ASCII code value in hexadecimal (upper case, two characters).
+
 .B r
 
 Identical to the \fBs\fR conversion specifier, except characters from the array are written in reverse, starting from (but not including) the terminating null byte ('\\0') and ending at the first element of the array.

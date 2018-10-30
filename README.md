@@ -35,6 +35,10 @@ The `int` argument is converted to an `unsigned char`.
 
 The `const char *` argument is expected to be a pointer to a character array (aka. pointer to a string). Characters from the array are written starting from the first element of the array and ending at, but not including, the terminating null byte (`\0`).
 
+* **S**
+
+Identical to the `s` conversion specifier, except any non-printable characters in the array (ie. characters with an ASCII value < 32 or >= 127) are written as `\x` followed by the ASCII code value in hexadecimal (upper case, two characters).
+
 * **r**
 
 Identical to the `s` conversion specifier, except characters from the array are written in reverse, starting from, but not including, the terminating null byte (`\0`) and ending at the first element of the array.
