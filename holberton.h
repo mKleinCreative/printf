@@ -52,7 +52,7 @@ enum
 	SPACE = 2,
 	HASH = 4,
 	ZERO = 8,
-	NEG = 16,
+	NEG = 16
 };
 
 int _printf(const char *format, ...);
