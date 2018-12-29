@@ -26,7 +26,7 @@ int convert_x(va_list args, int flag, buffer_t *output)
 
 	num = va_arg(args, unsigned int);
 
-	if (((flag >> 2) & 1) == 1)
+	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
 	return (ret + convert_ubase(output, num, "0123456789abcdef"));
