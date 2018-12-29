@@ -27,13 +27,15 @@ int convert_di(va_list args, int flag, buffer_t *output)
 
 	d = va_arg(args, int);
 
-	if (((flag >> 1) & 1) == 1 && (flag & 1) != 1)
-		ret += _memcpy(output, &space, 1);
-
 	if (d < 0)
 		ret += _memcpy(output, &neg, 1);
-	else if ((flag & 1) == 1)
-		ret += _memcpy(output, &plus, 1);
+	else
+	{
+		if (((flag >> 1) & 1) == 1)
+			ret += _memcpy(output, &space, 1);
+		if ((flag & 1) == 1)
+			ret += _memcpy(output, &plus, 1);
+	}
 
 	return (ret + convert_sbase(output, d, "0123456789"));
 }
