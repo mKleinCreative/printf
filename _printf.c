@@ -5,6 +5,7 @@
  */
 
 #include "holberton.h"
+#include <stdio.h>
 
 /**
  * count_one_bits - Counts the number of bits set to one

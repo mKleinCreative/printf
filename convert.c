@@ -34,10 +34,9 @@ int handle_flags(const char *flag)
 					ret = flags[j].value;
 				else
 					ret |= flags[j].value;
-				continue;
 			}
 		}
-		if (ret == 0)
+		if (flags[j].value == 0)
 			break;
 	}
 
