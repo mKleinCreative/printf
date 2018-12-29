@@ -97,7 +97,7 @@ unsigned int convert_o(va_list args, buffer_t *output,
 	else
 		num = va_arg(args, unsigned int);
 	if (len == SHORT)
-		num = (short)num;
+		num = (unsigned short)num;
 
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, &zero, 1);
@@ -125,7 +125,7 @@ unsigned int convert_u(va_list args, buffer_t *output,
 	else
 		num = va_arg(args, unsigned int);
 	if (len == SHORT)
-		num = (short)num;
+		num = (unsigned short)num;
 
 	(void)flag;
 

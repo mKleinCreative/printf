@@ -33,7 +33,7 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	else
 		num = va_arg(args, unsigned int);
 	if (len == SHORT)
-		num = (short)num;
+		num = (unsigned short)num;
 
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
@@ -63,7 +63,7 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	else
 		num = va_arg(args, unsigned int);
 	if (len == SHORT)
-		num = (short)num;
+		num = (unsigned short)num;
 
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
