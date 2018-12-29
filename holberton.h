@@ -1,15 +1,26 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
 
-/*
- * File: holberton.h
- * Auth: Brennan D Baraban
- *       Michael Klein
- */
-
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+/* Flag macros */
+enum
+{
+	PLUS = 1,
+	SPACE = 2,
+	HASH = 4,
+	ZERO = 8,
+	NEG = 16
+};
+
+/* Length macros */
+enum
+{
+	SHORT = 1,
+	LONG
+};
 
 /**
  * struct buffer_s - A new type defining a buffer struct.
@@ -21,7 +32,7 @@ typedef struct buffer_s
 {
 	char *buffer;
 	char *start;
-	int len;
+	unsigned int len;
 } buffer_t;
 
 /**
@@ -31,8 +42,9 @@ typedef struct buffer_s
  */
 typedef struct converter_s
 {
-	char specifier;
-	int (*func)(va_list, int, buffer_t *);
+	unsigned char specifier;
+	unsigned int (*func)(va_list, buffer_t *,
+			unsigned char, unsigned char);
 } converter_t;
 
 /**
@@ -42,43 +54,49 @@ typedef struct converter_s
  */
 typedef struct flag_s
 {
-	char flag;
-	int value;
+	unsigned char flag;
+	unsigned char value;
 } flag_t;
-
-enum
-{
-	PLUS = 1,
-	SPACE = 2,
-	HASH = 4,
-	ZERO = 8,
-	NEG = 16
-};
 
 int _printf(const char *format, ...);
 
 /* Conversion Functions */
-int convert_c(va_list args, int flag, buffer_t *output);
-int convert_s(va_list args, int flag, buffer_t *output);
-int convert_di(va_list args, int flag, buffer_t *output);
-int convert_percent(va_list args, int flag, buffer_t *output);
-int convert_b(va_list args, int flag, buffer_t *output);
-int convert_u(va_list args, int flag, buffer_t *output);
-int convert_o(va_list args, int flag, buffer_t *output);
-int convert_x(va_list args, int flag, buffer_t *output);
-int convert_X(va_list args, int flag, buffer_t *output);
-int convert_S(va_list args, int flag, buffer_t *output);
-int convert_p(va_list args, int flag, buffer_t *output);
-int convert_r(va_list args, int flag, buffer_t *output);
-int convert_R(va_list args, int flag, buffer_t *output);
+unsigned int convert_c(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_s(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_di(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_percent(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_b(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_u(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_o(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_x(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_X(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_S(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_p(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_r(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_R(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
 
 /* Helper Functions */
 buffer_t *init_buffer(void);
 void free_buffer(buffer_t *output);
-int handle_flags(const char *flag);
-int (*convert(const char *specifier))(va_list, int, buffer_t *);
-int _memcpy(buffer_t *output, char *src, unsigned int n);
-int convert_sbase(buffer_t *output, int num, char *base);
-int convert_ubase(buffer_t *output, unsigned long int num, char *base);
+unsigned char handle_flags(const char *flag);
+unsigned char handle_length(const char *modifier);
+unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
+		unsigned char, unsigned char);
+unsigned int _memcpy(buffer_t *output, const char *src, unsigned int n);
+unsigned int convert_sbase(buffer_t *output, long int num, char *base);
+unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base);
 
 #endif

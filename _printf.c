@@ -7,15 +7,15 @@
 #include "holberton.h"
 
 /**
- * count_one_bits - Counts the number of bits set to one
- *                  in a binary number.
+ * count_one_bits - Counts the number of bits set
+ *                  to one in a binary number.
  * @num: The binary number.
  *
  * Return: The number of bits set to one.
  */
-int count_one_bits(int num)
+unsigned char count_one_bits(unsigned char num)
 {
-	int count = 0;
+	unsigned char count = 0;
 
 	while (num != 0)
 	{
@@ -37,12 +37,12 @@ int _printf(const char *format, ...)
 {
 	buffer_t *output;
 	va_list args;
-	int i, flag, ret = 0;
-	char ch;
+	int i, ret = 0;
+	unsigned char flag, len;
+	unsigned int (*f)(va_list, buffer_t *, unsigned char, unsigned char);
 
 	if (format == NULL)
 		return (-1);
-
 	output = init_buffer();
 	if (output == NULL)
 		return (-1);
@@ -52,27 +52,27 @@ int _printf(const char *format, ...)
 	{
 		if (*(format + i) == '%')
 		{
-			flag = handle_flags(format + i + 1);
-			i += count_one_bits(flag);
-
-			if (convert(format + i + 1) != NULL)
-			{
-				i++;
-				ret += convert(format + i)(args, flag, output);
-				continue;
-			}
 			if (*(format + i + 1) == '\0')
 			{
 				ret = -1;
 				break;
 			}
+			flag = handle_flags(format + i + 1);
+			i += count_one_bits(flag);
+			len = handle_length(format + i + 1);
+			i += (len != 0) ? 1 : 0;
+			f = handle_specifiers(format + i + 1);
+			if (f != NULL)
+			{
+				i++;
+				ret += f(args, output, flag, len);
+				continue;
+			}
 		}
-		ch = *(format + i);
-		ret += _memcpy(output, &ch, 1);
+		ret += _memcpy(output, (format + i), 1);
 	}
-	write(1, output->start, output->len);
 	va_end(args);
+	write(1, output->start, output->len);
 	free_buffer(output);
-
 	return (ret);
 }

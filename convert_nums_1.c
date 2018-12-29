@@ -6,26 +6,38 @@
 
 #include "holberton.h"
 
-int convert_di(va_list args, int flag, buffer_t *output);
-int convert_b(va_list args, int flag, buffer_t *output);
-int convert_u(va_list args, int flag, buffer_t *output);
-int convert_o(va_list args, int flag, buffer_t *output);
+unsigned int convert_di(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_b(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_u(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_o(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
 
 /**
  * convert_di - Converts an argument to a signed int and
  *              stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
- * @flag: A flag modifier;.
+ * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_di(va_list args, int flag, buffer_t *output)
+unsigned int convert_di(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
-	int d, ret = 0;
+	long int d;
+	unsigned int ret = 0;
 	char space = ' ', neg = '-', plus = '+';
 
-	d = va_arg(args, int);
+	if (len == LONG)
+		d = va_arg(args, long int);
+	else
+		d = va_arg(args, int);
+	if (len == SHORT)
+		d = (short)d;
 
 	if (d < 0)
 		ret += _memcpy(output, &neg, 1);
@@ -45,17 +57,20 @@ int convert_di(va_list args, int flag, buffer_t *output)
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_b(va_list args, int flag, buffer_t *output)
+unsigned int convert_b(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
 	unsigned int num;
 
 	num = va_arg(args, unsigned int);
 
 	(void)flag;
+	(void)len;
 
 	return (convert_ubase(output, num, "01"));
 }
@@ -65,17 +80,24 @@ int convert_b(va_list args, int flag, buffer_t *output)
  *             stores it to a buffer contained in a struct.
  * @args: A va_list poinitng to the argument to be converted.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_o(va_list args, int flag, buffer_t *output)
+unsigned int convert_o(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
-	unsigned int num;
+	unsigned long int num;
+	unsigned int ret = 0;
 	char zero = '0';
-	int ret = 0;
 
-	num = va_arg(args, unsigned int);
+	if (len == LONG)
+		num = va_arg(args, unsigned long int);
+	else
+		num = va_arg(args, unsigned int);
+	if (len == SHORT)
+		num = (short)num;
 
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, &zero, 1);
@@ -88,15 +110,22 @@ int convert_o(va_list args, int flag, buffer_t *output)
  *               stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_u(va_list args, int flag, buffer_t *output)
+unsigned int convert_u(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
-	unsigned int num;
+	unsigned long int num;
 
-	num = va_arg(args, unsigned int);
+	if (len == LONG)
+		num = va_arg(args, unsigned long int);
+	else
+		num = va_arg(args, unsigned int);
+	if (len == SHORT)
+		num = (short)num;
 
 	(void)flag;
 

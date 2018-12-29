@@ -6,35 +6,42 @@
 
 #include "holberton.h"
 
-int convert_s(va_list args, int flag, buffer_t *output);
-int convert_S(va_list args, int flag, buffer_t *output);
-int convert_r(va_list args, int flag, buffer_t *output);
-int convert_R(va_list args, int flag, buffer_t *output);
+unsigned int convert_s(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_S(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_r(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
+unsigned int convert_R(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len);
 
 /**
  * convert_s - Converts an argument to a string and
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_s(va_list args, int flag, buffer_t *output)
+unsigned int convert_s(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
 	char *str, *null = "(null)";
-	int len;
+	unsigned int size;
 
 	str = va_arg(args, char *);
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
 
-	for (len = 0; *(str + len);)
-		len++;
+	for (size = 0; *(str + size);)
+		size++;
 
 	(void)flag;
+	(void)len;
 
-	return (_memcpy(output, str, len));
+	return (_memcpy(output, str, size));
 }
 
 /**
@@ -42,6 +49,7 @@ int convert_s(va_list args, int flag, buffer_t *output)
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
@@ -49,10 +57,11 @@ int convert_s(va_list args, int flag, buffer_t *output)
  * Description: Non-printable characteres (ASCII values < 32 or >= 127)
  *              are stored as \x followed by the ASCII code value in hex.
  */
-int convert_S(va_list args, int flag, buffer_t *output)
+unsigned int convert_S(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
 	char *str, *null = "(null)", *hex = "\\x", *zero = "0";
-	int len = 0, index;
+	unsigned int size = 0, index;
 
 	str = va_arg(args, char *);
 	if (str == NULL)
@@ -62,22 +71,23 @@ int convert_S(va_list args, int flag, buffer_t *output)
 	{
 		if (*(str + index) < 32 || *(str + index) >= 127)
 		{
-			len += _memcpy(output, hex, 2);
+			size += _memcpy(output, hex, 2);
 
 			if (*(str + index) < 16)
-				len += _memcpy(output, zero, 1);
+				size += _memcpy(output, zero, 1);
 
-			len += convert_ubase(output, *(str + index),
+			size += convert_ubase(output, *(str + index),
 					     "0123456789ABCDEF");
 			continue;
 		}
 
-		len += _memcpy(output, (str + index), 1);
+		size += _memcpy(output, (str + index), 1);
 	}
 
 	(void)flag;
+	(void)len;
 
-	return (len);
+	return (size);
 }
 
 /**
@@ -85,28 +95,32 @@ int convert_S(va_list args, int flag, buffer_t *output)
  *             to a buffer contained in a struct.
  * @args: A va_list pointing to the string to be reversed.
  * @flag: A flag modifier.
+ * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_r(va_list args, int flag, buffer_t *output)
+unsigned int convert_r(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
 	char *str, *null = "(null)";
-	int len, end;
+	unsigned int size;
+	int end;
 
 	str = va_arg(args, char *);
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
 
-	for (len = 0; *(str + len);)
-		len++;
+	for (size = 0; *(str + size);)
+		size++;
 
-	for (end = len - 1; end >= 0; end--)
+	for (end = size - 1; end >= 0; end--)
 		_memcpy(output, (str + end), 1);
 
 	(void)flag;
+	(void)len;
 
-	return (len);
+	return (size);
 }
 
 /**
@@ -114,25 +128,27 @@ int convert_r(va_list args, int flag, buffer_t *output)
  *             it to a buffer contained in a struct.
  * @args: A va_list pointing to the string to be converted.
  * @flag: A flag modifier.
+ * @len: A lenth modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
-int convert_R(va_list args, int flag, buffer_t *output)
+unsigned int convert_R(va_list args, buffer_t *output,
+		unsigned char flag, unsigned char len)
 {
 	char *alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char *rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 	char *str, *null = "(null)";
-	int i, j, len;
+	unsigned int i, j, size;
 
 	str = va_arg(args, char *);
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
 
-	for (len = 0; *(str + len);)
-		len++;
+	for (size = 0; *(str + size);)
+		size++;
 
-	for (i = 0; i < len; i++)
+	for (i = 0; i < size; i++)
 	{
 		for (j = 0; j < 52; j++)
 		{
@@ -148,6 +164,7 @@ int convert_R(va_list args, int flag, buffer_t *output)
 	}
 
 	(void)flag;
+	(void)len;
 
-	return (len);
+	return (size);
 }
