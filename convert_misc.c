@@ -6,33 +6,43 @@
 #include "holberton.h"
 
 unsigned int convert_c(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_percent(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_p(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 
 /**
  * convert_c - Converts an argument to an unsigned char and
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_c(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
-	char c;
+	char c, width = ' ';
+	unsigned int ret = 0;
 
 	c = va_arg(args, int);
 
 	(void)flag;
+	(void)prec;
 	(void)len;
 
-	return (_memcpy(output, &c, 1));
+	while (wid > 1)
+	{
+		ret += _memcpy(output, &width, 1);
+		wid--;
+	}
+
+	return (ret + _memcpy(output, &c, 1));
 }
 
 /**
@@ -40,21 +50,31 @@ unsigned int convert_c(va_list args, buffer_t *output,
  *                   buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer (always 1).
  */
 unsigned int convert_percent(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
-	char percent = '%';
+	char percent = '%', width = ' ';
+	unsigned int ret = 0;
 
 	(void)args;
 	(void)flag;
+	(void)prec;
 	(void)len;
 
-	return (_memcpy(output, &percent, 1));
+	while (wid > 1)
+	{
+		ret += _memcpy(output, &width, 1);
+		wid--;
+	}
+
+	return (ret + _memcpy(output, &percent, 1));
 }
 
 /**
@@ -62,26 +82,28 @@ unsigned int convert_percent(va_list args, buffer_t *output,
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_p(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	char *lead = "0x", *null = "(nil)";
 	unsigned long int address;
 
-	address = va_arg(args, unsigned long int);
+	(void)flag;
+	(void)len;
 
+	address = va_arg(args, unsigned long int);
 	if (address == '\0')
 		return (_memcpy(output, null, 5));
 
 	_memcpy(output, lead, 2);
 
-	(void)flag;
-	(void)len;
-
-	return (2 + convert_ubase(output, address, "0123456789abcdef"));
+	return (2 + convert_ubase(output, address, "0123456789abcdef",
+				wid, prec));
 }

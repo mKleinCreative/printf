@@ -62,15 +62,72 @@ unsigned char handle_length(const char *modifier)
 }
 
 /**
+ * handle_width - Matches a width modifier with its corresponding value.
+ * @args: A va_list of arguments.
+ * @modifier: A pointer to a potential width modifier.
+ *
+ * Return: If a width modifier is matched - its value.
+ *         Otherwise - 0.
+ */
+int handle_width(va_list args, const char *modifier)
+{
+	int value;
+
+	if ((*modifier <= '0' || *modifier > '9') && (*modifier != '*'))
+		return (0);
+
+	if (*modifier == '*')
+	{
+		value = va_arg(args, int);
+		if (value < 0)
+			return (0);
+		return (value);
+	}
+
+	return (*modifier - '0');
+}
+
+/**
+ * handle_precision - Matches a precision modifier with
+ *                    its corresponding value.
+ * @args: A va_list of arguments.
+ * @modifier: A pointer to a potential precision modifier.
+ *
+ * Return: If a precision modifier is matched - its vaue.
+ *         Otherwise - 0.
+ */
+int handle_precision(va_list args, const char *modifier)
+{
+	int value;
+
+	if (*modifier != '.')
+		return (0);
+
+	if ((*(modifier + 1) <= '0' || *(modifier + 1) > '9') &&
+	     *(modifier + 1) != '*')
+		return (0);
+
+	if (*(modifier + 1) == '*')
+	{
+		value = va_arg(args, int);
+		if (value < 0)
+			return (0);
+		return (value);
+	}
+
+	return (*(modifier + 1) - '0');
+}
+
+/**
  * handle_specifiers - Matches a conversion specifier with
  *                     a corresponding conversion function.
- * @char: A pointer to a potential conversion specifier.
+ * @specifier: A pointer to a potential conversion specifier.
  *
  * Return: If a conversion function is matched - a pointer to the function.
  *         Otherwise - NULL.
  */
-unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
-		unsigned char, unsigned char)
+unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,\
+		unsigned char, int, int, unsigned char)
 {
 	int i;
 	converter_t converters[] = {

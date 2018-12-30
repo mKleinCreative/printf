@@ -7,26 +7,28 @@
 #include "holberton.h"
 
 unsigned int convert_di(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_b(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_u(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_o(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 
 /**
  * convert_di - Converts an argument to a signed int and
  *              stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_di(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	long int d;
 	unsigned int ret = 0;
@@ -49,7 +51,7 @@ unsigned int convert_di(va_list args, buffer_t *output,
 			ret += _memcpy(output, &space, 1);
 	}
 
-	return (ret + convert_sbase(output, d, "0123456789"));
+	return (ret + convert_sbase(output, d, "0123456789", wid, prec));
 }
 
 /**
@@ -57,13 +59,15 @@ unsigned int convert_di(va_list args, buffer_t *output,
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_b(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned int num;
 
@@ -72,7 +76,7 @@ unsigned int convert_b(va_list args, buffer_t *output,
 	(void)flag;
 	(void)len;
 
-	return (convert_ubase(output, num, "01"));
+	return (convert_ubase(output, num, "01", wid, prec));
 }
 
 /**
@@ -80,13 +84,15 @@ unsigned int convert_b(va_list args, buffer_t *output,
  *             stores it to a buffer contained in a struct.
  * @args: A va_list poinitng to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_o(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned long int num;
 	unsigned int ret = 0;
@@ -102,7 +108,7 @@ unsigned int convert_o(va_list args, buffer_t *output,
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, &zero, 1);
 
-	return (ret + convert_ubase(output, num, "01234567"));
+	return (ret + convert_ubase(output, num, "01234567", wid, prec));
 }
 
 /**
@@ -110,13 +116,15 @@ unsigned int convert_o(va_list args, buffer_t *output,
  *               stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_u(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned long int num;
 
@@ -129,5 +137,5 @@ unsigned int convert_u(va_list args, buffer_t *output,
 
 	(void)flag;
 
-	return (convert_ubase(output, num, "0123456789"));
+	return (convert_ubase(output, num, "0123456789", wid, prec));
 }

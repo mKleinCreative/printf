@@ -7,22 +7,24 @@
 #include "holberton.h"
 
 unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len);
+		unsigned char flag, int wid, int prec, unsigned char len);
 
 /**
  * convert_x - Converts an unsigned int argument to hex using abcdef
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned long int num;
 	unsigned int ret = 0;
@@ -38,7 +40,8 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	return (ret + convert_ubase(output, num, "0123456789abcdef"));
+	return (ret + convert_ubase(output, num, "0123456789abcdef",
+				wid, prec));
 }
 
 /**
@@ -46,13 +49,15 @@ unsigned int convert_x(va_list args, buffer_t *output,
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
  * @flag: A flag modifier.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
  * @len: A length modifier.
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flag, unsigned char len)
+		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned long int num;
 	unsigned int ret = 0;
@@ -68,5 +73,6 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	if (((flag >> 2) & 1) == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	return (ret + convert_ubase(output, num, "0123456789ABCDEF"));
+	return (ret + convert_ubase(output, num, "0123456789ABCDEF",
+				wid, prec));
 }

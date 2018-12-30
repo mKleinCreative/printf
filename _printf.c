@@ -40,27 +40,22 @@ void cleanup(va_list args, buffer_t *output)
 	free_buffer(output);
 }
 
+
 /**
- * _printf - Outputs a formatted string.
+ * run_printf - Reads through the format string for _printf.
  * @format: Character string to print - may contain directives.
+ * @output: A buffer_t struct containing a buffer.
+ * @args: A va_list of arguments.
  *
- * Return: The number of characters printed.
+ * Return: The number of characters stored to output.
  */
-int _printf(const char *format, ...)
+int run_printf(const char *format, va_list args, buffer_t *output)
 {
-	buffer_t *output;
-	va_list args;
-	int i, tmp, ret = 0;
+	int i, wid, prec, tmp, ret = 0;
 	unsigned char flag, len;
-	unsigned int (*f)(va_list, buffer_t *, unsigned char, unsigned char);
+	unsigned int (*f)(va_list, buffer_t *,\
+			unsigned char, int, int, unsigned char);
 
-	if (format == NULL)
-		return (-1);
-	output = init_buffer();
-	if (output == NULL)
-		return (-1);
-
-	va_start(args, format);
 	for (i = 0; *(format + i); i++)
 	{
 		len = 0;
@@ -68,13 +63,18 @@ int _printf(const char *format, ...)
 		{
 			flag = handle_flags(format + i + 1);
 			tmp = count_one_bits(flag);
+			wid = handle_width(args, format + i + tmp + 1);
+			tmp += (wid != 0) ? 1 : 0;
+			prec = handle_precision(args, format + i + tmp + 1);
+			tmp += (prec != 0) ? 2 : 0;
 			len = handle_length(format + i + tmp + 1);
 			tmp += (len != 0) ? 1 : 0;
+
 			f = handle_specifiers(format + i + tmp + 1);
 			if (f != NULL)
 			{
 				i += tmp + 1;
-				ret += f(args, output, flag, len);
+				ret += f(args, output, flag, wid, prec, len);
 				continue;
 			}
 			else if (*(format + i + tmp + 1) == '\0')
@@ -86,6 +86,32 @@ int _printf(const char *format, ...)
 		ret += _memcpy(output, (format + i), 1);
 		i += (len != 0) ? 1 : 0;
 	}
+
 	cleanup(args, output);
+	return (ret);
+}
+
+/**
+ * _printf - Outputs a formatted string.
+ * @format: Character string to print - may contain directives.
+ *
+ * Return: The number of characters printed.
+ */
+int _printf(const char *format, ...)
+{
+	buffer_t *output;
+	va_list args;
+	int ret;
+
+	if (format == NULL)
+		return (-1);
+	output = init_buffer();
+	if (output == NULL)
+		return (-1);
+
+	va_start(args, format);
+
+	ret = run_printf(format, args, output);
+
 	return (ret);
 }
