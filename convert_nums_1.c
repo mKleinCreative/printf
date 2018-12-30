@@ -30,8 +30,8 @@ unsigned int convert_o(va_list args, buffer_t *output,
 unsigned int convert_di(va_list args, buffer_t *output,
 		unsigned char flag, int wid, int prec, unsigned char len)
 {
-	long int d;
-	unsigned int ret = 0;
+	long int d, copy;
+	unsigned int ret = 0, count = 0;
 	char space = ' ', neg = '-', plus = '+';
 
 	if (len == LONG)
@@ -40,6 +40,20 @@ unsigned int convert_di(va_list args, buffer_t *output,
 		d = va_arg(args, int);
 	if (len == SHORT)
 		d = (short)d;
+
+	copy = (d < 0) ? -d : d;
+	while (copy > 0)
+	{
+		count++;
+		copy /= 10;
+	}
+
+	wid -= (d < 0) ? (count + 1) : count;
+	while (wid > 0)
+	{
+		ret += _memcpy(output, &space, 1);
+		wid--;
+	}
 
 	if (d < 0)
 		ret += _memcpy(output, &neg, 1);
@@ -51,7 +65,7 @@ unsigned int convert_di(va_list args, buffer_t *output,
 			ret += _memcpy(output, &space, 1);
 	}
 
-	return (ret + convert_sbase(output, d, "0123456789", wid, prec));
+	return (ret + convert_sbase(output, d, "0123456789", 0, prec));
 }
 
 /**
