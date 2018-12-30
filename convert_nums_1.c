@@ -34,6 +34,9 @@ unsigned int convert_di(va_list args, buffer_t *output,
 	unsigned int ret = 0, count = 0;
 	char space = ' ', neg = '-', plus = '+';
 
+	if (prec == 0)
+		return (0);
+
 	if (len == LONG)
 		d = va_arg(args, long int);
 	else
@@ -41,15 +44,17 @@ unsigned int convert_di(va_list args, buffer_t *output,
 	if (len == SHORT)
 		d = (short)d;
 
-	copy = (d < 0) ? -d : d;
-	while (copy > 0)
+	if (d != 0)
 	{
-		count++;
-		copy /= 10;
+		copy = (d < 0) ? -d : d;
+		while (copy > 0)
+		{
+			count++;
+			copy /= 10;
+		}
+		wid -= (d < 0) ? (count + 1) : count;
 	}
-
-	wid -= (d < 0) ? (count + 1) : count;
-	while (wid > 0)
+	while (wid > 1)
 	{
 		ret += _memcpy(output, &space, 1);
 		wid--;
@@ -112,6 +117,9 @@ unsigned int convert_o(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char zero = '0';
 
+	if (prec == 0)
+		return (0);
+
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);
 	else
@@ -141,6 +149,9 @@ unsigned int convert_u(va_list args, buffer_t *output,
 		unsigned char flag, int wid, int prec, unsigned char len)
 {
 	unsigned long int num;
+
+	if (prec == 0)
+		return (0);
 
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);

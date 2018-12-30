@@ -66,10 +66,13 @@ int run_printf(const char *format, va_list args, buffer_t *output)
 			wid = handle_width(args, format + i + tmp + 1);
 			tmp += (wid != 0) ? 1 : 0;
 			prec = handle_precision(args, format + i + tmp + 1);
-			tmp += (prec != 0) ? 2 : 0;
+			tmp += (prec != -1) ? 2 : 0;
+			if (prec == 0 &&
+			    (*(format + i + tmp + 2) != '0' ||
+			    *(format + i + tmp + 2) != '*'))
+				tmp--;
 			len = handle_length(format + i + tmp + 1);
 			tmp += (len != 0) ? 1 : 0;
-
 			f = handle_specifiers(format + i + tmp + 1);
 			if (f != NULL)
 			{
@@ -86,7 +89,6 @@ int run_printf(const char *format, va_list args, buffer_t *output)
 		ret += _memcpy(output, (format + i), 1);
 		i += (len != 0) ? 1 : 0;
 	}
-
 	cleanup(args, output);
 	return (ret);
 }

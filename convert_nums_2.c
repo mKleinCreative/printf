@@ -30,6 +30,9 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char *lead = "0x";
 
+	if (prec == 0)
+		return (0);
+
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);
 	else
@@ -62,6 +65,9 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	unsigned long int num;
 	unsigned int ret = 0;
 	char *lead = "0X";
+
+	if (prec == 0)
+		return (0);
 
 	if (len == LONG)
 		num = va_arg(args, unsigned long);

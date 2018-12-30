@@ -94,14 +94,15 @@ int handle_width(va_list args, const char *modifier)
  * @modifier: A pointer to a potential precision modifier.
  *
  * Return: If a precision modifier is matched - its vaue.
- *         Otherwise - 0.
+ *         If the precision modifier is empty, zero, or negative - 0.
+ *         Otherwise - -1.
  */
 int handle_precision(va_list args, const char *modifier)
 {
 	int value;
 
 	if (*modifier != '.')
-		return (0);
+		return (-1);
 
 	if ((*(modifier + 1) <= '0' || *(modifier + 1) > '9') &&
 	     *(modifier + 1) != '*')
