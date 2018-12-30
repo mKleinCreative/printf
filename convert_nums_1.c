@@ -36,7 +36,6 @@ unsigned int convert_di(va_list args, buffer_t *output,
 
 	if (prec == 0)
 		return (0);
-
 	if (len == LONG)
 		d = va_arg(args, long int);
 	else
@@ -54,7 +53,7 @@ unsigned int convert_di(va_list args, buffer_t *output,
 		}
 		wid -= (d < 0) ? (count + 1) : count;
 	}
-	while (wid > 1)
+	while (wid > 0)
 	{
 		ret += _memcpy(output, &space, 1);
 		wid--;

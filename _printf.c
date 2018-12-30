@@ -67,9 +67,8 @@ int run_printf(const char *format, va_list args, buffer_t *output)
 			tmp += (wid != 0) ? 1 : 0;
 			prec = handle_precision(args, format + i + tmp + 1);
 			tmp += (prec != -1) ? 2 : 0;
-			if (prec == 0 &&
-			    (*(format + i + tmp + 2) != '0' ||
-			    *(format + i + tmp + 2) != '*'))
+			if (prec == 0 && *(format + i + tmp) != '0' &&
+			    *(format + i + tmp) != '*')
 				tmp--;
 			len = handle_length(format + i + tmp + 1);
 			tmp += (len != 0) ? 1 : 0;

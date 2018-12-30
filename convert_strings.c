@@ -5,6 +5,7 @@
  */
 
 #include "holberton.h"
+#include <stdio.h>
 
 unsigned int convert_s(va_list args, buffer_t *output,
 		unsigned char flag, int wid, int prec, unsigned char len);
@@ -50,7 +51,7 @@ unsigned int convert_s(va_list args, buffer_t *output,
 		wid--;
 	}
 
-	prec = (prec == 0) ? (int)size : prec;
+	prec = (prec == -1) ? (int)size : prec;
 	while (*str != '\0' && prec > 0)
 	{
 		ret += _memcpy(output, str, 1);
@@ -100,7 +101,7 @@ unsigned int convert_S(va_list args, buffer_t *output,
 		wid--;
 	}
 
-	prec = (prec == 0) ? (int)size : prec;
+	prec = (prec == -1) ? (int)size : prec;
 	for (index = 0; *(str + index) != '\0' && index < prec; index++)
 	{
 		if (*(str + index) < 32 || *(str + index) >= 127)
@@ -150,7 +151,7 @@ unsigned int convert_r(va_list args, buffer_t *output,
 	for (size = 0; *(str + size);)
 		size++;
 
-	wid -= (prec == 0) ? size : prec;
+	wid -= (prec == -1) ? size : prec;
 	while (wid > 0)
 	{
 		ret += _memcpy(output, &width, 1);
@@ -158,7 +159,7 @@ unsigned int convert_r(va_list args, buffer_t *output,
 	}
 
 	end = size - 1;
-	prec = (prec == 0) ? (int)size : prec;
+	prec = (prec == -1) ? (int)size : prec;
 	for (i = 0; end > 0 && i < prec; i++)
 	{
 		ret += _memcpy(output, (str + end), 1);
@@ -199,14 +200,14 @@ unsigned int convert_R(va_list args, buffer_t *output,
 	for (size = 0; *(str + size);)
 		size++;
 
-	wid -= (prec == 0) ? size : prec;
+	wid -= (prec == -1) ? size : prec;
 	while (wid > 0)
 	{
 		ret += _memcpy(output, &width, 1);
 		wid--;
 	}
 
-	prec = (prec == 0) ? (int)size : prec;
+	prec = (prec == -1) ? (int)size : prec;
 	for (i = 0; *(str + i) != '\0' && i < prec; i++)
 	{
 		for (j = 0; j < 52; j++)
