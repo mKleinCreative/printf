@@ -7,15 +7,15 @@
 #include "holberton.h"
 
 unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 
 /**
  * convert_x - Converts an unsigned int argument to hex using abcdef
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A length modifier.
@@ -24,11 +24,11 @@ unsigned int convert_X(va_list args, buffer_t *output,
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	unsigned long int num;
 	unsigned int ret = 0;
-	char *lead = "0x";
+	char *lead = "0x", space = ' ';
 
 	if (prec == 0)
 		return (0);
@@ -40,18 +40,26 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	if (len == SHORT)
 		num = (unsigned short)num;
 
-	if (((flag >> 2) & 1) == 1 && num != 0)
+	if (HASH_FLAG == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	return (ret + convert_ubase(output, num, "0123456789abcdef",
-				wid, prec));
+	ret += convert_ubase(output, num, "0123456789abcdef",
+			flags, wid, prec);
+
+	if (NEG_FLAG == 1)
+	{
+		for (wid -= ret; wid > 0; wid--)
+			ret += _memcpy(output, &space, 1);
+	}
+
+	return (ret);
 }
 
 /**
  * convert_X - Converts an unsigned int argument to hex using ABCDEF
  *             and stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A length modifier.
@@ -60,11 +68,11 @@ unsigned int convert_x(va_list args, buffer_t *output,
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	unsigned long int num;
 	unsigned int ret = 0;
-	char *lead = "0X";
+	char *lead = "0X", space = ' ';
 
 	if (prec == 0)
 		return (0);
@@ -76,9 +84,17 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	if (len == SHORT)
 		num = (unsigned short)num;
 
-	if (((flag >> 2) & 1) == 1 && num != 0)
+	if (HASH_FLAG == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	return (ret + convert_ubase(output, num, "0123456789ABCDEF",
-				wid, prec));
+	ret += convert_ubase(output, num, "0123456789ABCDEF",
+			flags, wid, prec);
+
+	if (NEG_FLAG == 1)
+	{
+		for (wid -= ret; wid > 0; wid--)
+			ret += _memcpy(output, &space, 1);
+	}
+
+	return (ret);
 }

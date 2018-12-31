@@ -5,22 +5,21 @@
  */
 
 #include "holberton.h"
-#include <stdio.h>
 
 unsigned int convert_s(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 unsigned int convert_S(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 unsigned int convert_r(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 unsigned int convert_R(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len);
+		unsigned char flags, char wid, char prec, unsigned char len);
 
 /**
  * convert_s - Converts an argument to a string and
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A length modifier.
@@ -29,12 +28,12 @@ unsigned int convert_R(va_list args, buffer_t *output,
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_s(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	char *str, *null = "(null)", width = ' ';
 	unsigned int size, ret = 0;
 
-	(void)flag;
+	(void)flags;
 	(void)len;
 
 	str = va_arg(args, char *);
@@ -66,7 +65,7 @@ unsigned int convert_s(va_list args, buffer_t *output,
  * convert_S - Converts an argument to a string and
  *             stores it to a buffer contained in a struct.
  * @args: A va_list pointing to the argument to be converted.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A length modifier.
@@ -78,13 +77,12 @@ unsigned int convert_s(va_list args, buffer_t *output,
  *              are stored as \x followed by the ASCII code value in hex.
  */
 unsigned int convert_S(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	char *str, *null = "(null)", *hex = "\\x", *zero = "0", width = ' ';
 	int size, index;
 	unsigned int ret = 0;
 
-	(void)flag;
 	(void)len;
 
 	str = va_arg(args, char *);
@@ -112,7 +110,7 @@ unsigned int convert_S(va_list args, buffer_t *output,
 				ret += _memcpy(output, zero, 1);
 
 			ret += convert_ubase(output, *(str + index),
-					     "0123456789ABCDEF", 0, 0);
+					     "0123456789ABCDEF", flags, 0, 0);
 			continue;
 		}
 
@@ -126,7 +124,7 @@ unsigned int convert_S(va_list args, buffer_t *output,
  * convert_r - Reverses a string and stores it
  *             to a buffer contained in a struct.
  * @args: A va_list pointing to the string to be reversed.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A length modifier.
@@ -135,13 +133,13 @@ unsigned int convert_S(va_list args, buffer_t *output,
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_r(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	char *str, *null = "(null)", width = ' ';
 	int size, end, i;
 	unsigned int ret = 0;
 
-	(void)flag;
+	(void)flags;
 	(void)len;
 
 	str = va_arg(args, char *);
@@ -173,7 +171,7 @@ unsigned int convert_r(va_list args, buffer_t *output,
  * convert_R - Converts a string to ROT13 and stores
  *             it to a buffer contained in a struct.
  * @args: A va_list pointing to the string to be converted.
- * @flag: A flag modifier.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  * @len: A lenth modifier.
@@ -182,7 +180,7 @@ unsigned int convert_r(va_list args, buffer_t *output,
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_R(va_list args, buffer_t *output,
-		unsigned char flag, int wid, int prec, unsigned char len)
+		unsigned char flags, char wid, char prec, unsigned char len)
 {
 	char *alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char *rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
@@ -190,7 +188,7 @@ unsigned int convert_R(va_list args, buffer_t *output,
 	int i, j, size;
 	unsigned int ret = 0;
 
-	(void)flag;
+	(void)flags;
 	(void)len;
 
 	str = va_arg(args, char *);

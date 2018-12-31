@@ -51,10 +51,11 @@ void cleanup(va_list args, buffer_t *output)
  */
 int run_printf(const char *format, va_list args, buffer_t *output)
 {
-	int i, wid, prec, tmp, ret = 0;
+	int i, ret = 0;
+	char wid, prec, tmp;
 	unsigned char flag, len;
 	unsigned int (*f)(va_list, buffer_t *,\
-			unsigned char, int, int, unsigned char);
+			unsigned char, char, char, unsigned char);
 
 	for (i = 0; *(format + i); i++)
 	{

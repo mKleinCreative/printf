@@ -21,6 +21,7 @@ unsigned char handle_flags(const char *flag)
 		{'+', PLUS},
 		{' ', SPACE},
 		{'#', HASH},
+		{'0', ZERO},
 		{'-', NEG},
 		{0, 0}
 	};
@@ -69,9 +70,9 @@ unsigned char handle_length(const char *modifier)
  * Return: If a width modifier is matched - its value.
  *         Otherwise - 0.
  */
-int handle_width(va_list args, const char *modifier)
+char handle_width(va_list args, const char *modifier)
 {
-	int value;
+	char value;
 
 	if ((*modifier <= '0' || *modifier > '9') && (*modifier != '*'))
 		return (0);
@@ -97,9 +98,9 @@ int handle_width(va_list args, const char *modifier)
  *         If the precision modifier is empty, zero, or negative - 0.
  *         Otherwise - -1.
  */
-int handle_precision(va_list args, const char *modifier)
+char handle_precision(va_list args, const char *modifier)
 {
-	int value;
+	char value;
 
 	if (*modifier != '.')
 		return (-1);
@@ -128,7 +129,7 @@ int handle_precision(va_list args, const char *modifier)
  *         Otherwise - NULL.
  */
 unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,\
-		unsigned char, int, int, unsigned char)
+		unsigned char, char, char, unsigned char)
 {
 	int i;
 	converter_t converters[] = {

@@ -1,15 +1,15 @@
 /*
  * File: base_converters.c
  * Auth: Brennan D Baraban
- *       Michael Klein
  */
 
 #include "holberton.h"
 
 unsigned int convert_sbase(buffer_t *output, long int num, char *base,
-		int wid, int prec);
+		unsigned char flags, char wid, char prec);
 unsigned int convert_ubase(buffer_t *output,
-		unsigned long int num, char *base, int wid, int prec);
+		unsigned long int num, char *base,
+		unsigned char flags, char wid, char prec);
 
 /**
  * convert_sbase - Converts a signed long to an inputted base and stores
@@ -17,16 +17,17 @@ unsigned int convert_ubase(buffer_t *output,
  * @output: A buffer_t struct containing a character array.
  * @num: A signed long to be converted.
  * @base: A pointer to a string containing the base to convert to.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_sbase(buffer_t *output, long int num, char *base,
-		int wid, int prec)
+		unsigned char flags, char wid, char prec)
 {
 	int size;
-	char digit, width = ' ', zero = '0';
+	char digit, pad = '0';
 	unsigned int ret = 1;
 
 	for (size = 0; *(base + size);)
@@ -34,20 +35,18 @@ unsigned int convert_sbase(buffer_t *output, long int num, char *base,
 
 	if (num >= size || num <= -size)
 		ret += convert_sbase(output, num / size, base,
-				wid - 1, prec - 1);
+				flags, wid - 1, prec - 1);
 
 	else
 	{
-		while (prec > 1)
+		for (; prec > 1; prec--, wid--)
+			ret += _memcpy(output, &pad, 1);
+
+		if (NEG_FLAG == 0)
 		{
-			ret += _memcpy(output, &zero, 1);
-			prec--;
-			wid--;
-		}
-		while (wid > 1)
-		{
-			ret += _memcpy(output, &width, 1);
-			wid--;
+			pad = (ZERO_FLAG == 1) ? '0' : ' ';
+			for (; wid > 1; wid--)
+				ret += _memcpy(output, &pad, 1);
 		}
 	}
 
@@ -63,36 +62,35 @@ unsigned int convert_sbase(buffer_t *output, long int num, char *base,
  * @output: A buffer_t struct containing a character array.
  * @num: An unsigned long to be converted.
  * @base: A pointer to a string containing the base to convert to.
+ * @flags: Flag modifiers.
  * @wid: A width modifier.
  * @prec: A precision modifier.
  *
  * Return: The number of bytes stored to the buffer.
  */
 unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
-		int wid, int prec)
+		unsigned char flags, char wid, char prec)
 {
 	unsigned int size, ret = 1;
-	char digit, width = ' ', zero = '0';
+	char digit, pad = '0';
 
 	for (size = 0; *(base + size);)
 		size++;
 
 	if (num >= size)
 		ret += convert_ubase(output, num / size, base,
-				wid - 1, prec - 1);
+				flags, wid - 1, prec - 1);
 
 	else
 	{
-		while (prec > 1)
+		for (; prec > 1; prec--, wid--)
+			ret += _memcpy(output, &pad, 1);
+
+		if (NEG_FLAG == 0)
 		{
-			ret += _memcpy(output, &zero, 1);
-			prec--;
-			wid--;
-		}
-		while (wid > 1)
-		{
-			ret += _memcpy(output, &width, 1);
-			wid--;
+			pad = (ZERO_FLAG == 1) ? '0' : ' ';
+			for (; wid > 1; wid--)
+				ret += _memcpy(output, &pad, 1);
 		}
 	}
 
