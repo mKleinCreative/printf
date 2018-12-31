@@ -72,7 +72,7 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 		unsigned char flags, char wid, char prec)
 {
 	unsigned int size, ret = 1;
-	char digit, pad = '0';
+	char digit, pad = '0', *lead = "0x";
 
 	for (size = 0; *(base + size);)
 		size++;
@@ -83,6 +83,8 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 
 	else
 	{
+		if (((flags >> 5) & 1) == 1)
+			wid -= 2;
 		for (; prec > 1; prec--, wid--)
 			ret += _memcpy(output, &pad, 1);
 
@@ -92,6 +94,8 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 			for (; wid > 1; wid--)
 				ret += _memcpy(output, &pad, 1);
 		}
+		if (((flags >> 5) & 1) == 1)
+			ret += _memcpy(output, lead, 2);
 	}
 
 	digit = base[(num % size)];

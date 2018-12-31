@@ -106,7 +106,7 @@ unsigned int convert_percent(va_list args, buffer_t *output,
 unsigned int convert_p(va_list args, buffer_t *output,
 		unsigned char flags, char wid, char prec, unsigned char len)
 {
-	char *lead = "0x", *null = "(nil)";
+	char *null = "(nil)";
 	unsigned long int address;
 
 	(void)len;
@@ -115,8 +115,8 @@ unsigned int convert_p(va_list args, buffer_t *output,
 	if (address == '\0')
 		return (_memcpy(output, null, 5));
 
-	_memcpy(output, lead, 2);
+	flags |= 32;
 
-	return (2 + convert_ubase(output, address, "0123456789abcdef",
+	return (convert_ubase(output, address, "0123456789abcdef",
 				flags, wid, prec));
 }
