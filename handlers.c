@@ -116,15 +116,13 @@ char handle_precision(va_list args, const char *modifier, char *index)
 	modifier++;
 	(*index)++;
 
-	if (*modifier == '0')
+	if ((*modifier <= '0' || *modifier > '9') &&
+	     *modifier != '*')
 	{
-		(*index)++;
+		if (*modifier == '0')
+			(*index)++;
 		return (0);
 	}
-
-	if ((*modifier < '0' || *modifier > '9') &&
-	     *modifier != '*')
-		return (-1);
 
 	while ((*modifier > '0' && *modifier <= '9') ||
 	       (*modifier == '*'))
