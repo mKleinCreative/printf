@@ -84,7 +84,10 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 	else
 	{
 		if (((flags >> 5) & 1) == 1)
+		{
 			wid -= 2;
+			prec -= 2;
+		}
 		for (; prec > 1; prec--, wid--)
 			ret += _memcpy(output, &pad, 1);
 
