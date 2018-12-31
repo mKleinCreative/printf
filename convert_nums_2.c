@@ -30,9 +30,6 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char *lead = "0x", space = ' ';
 
-	if (prec == 0)
-		return (0);
-
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);
 	else
@@ -43,8 +40,9 @@ unsigned int convert_x(va_list args, buffer_t *output,
 	if (HASH_FLAG == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	ret += convert_ubase(output, num, "0123456789abcdef",
-			flags, wid, prec);
+	if (!(num == 0 && prec == 0))
+		ret += convert_ubase(output, num, "0123456789abcdef",
+				flags, wid, prec);
 
 	if (NEG_FLAG == 1)
 	{
@@ -74,9 +72,6 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char *lead = "0X", space = ' ';
 
-	if (prec == 0)
-		return (0);
-
 	if (len == LONG)
 		num = va_arg(args, unsigned long);
 	else
@@ -87,8 +82,9 @@ unsigned int convert_X(va_list args, buffer_t *output,
 	if (HASH_FLAG == 1 && num != 0)
 		ret += _memcpy(output, lead, 2);
 
-	ret += convert_ubase(output, num, "0123456789ABCDEF",
-			flags, wid, prec);
+	if (!(num == 0 && prec == 0))
+		ret += convert_ubase(output, num, "0123456789ABCDEF",
+				flags, wid, prec);
 
 	if (NEG_FLAG == 1)
 	{

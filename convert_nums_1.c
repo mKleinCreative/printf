@@ -115,8 +115,6 @@ unsigned int convert_o(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char zero = '0', space = ' ';
 
-	if (prec == 0)
-		return (0);
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);
 	else
@@ -127,7 +125,9 @@ unsigned int convert_o(va_list args, buffer_t *output,
 	if (HASH_FLAG == 1 && num != 0)
 		ret += _memcpy(output, &zero, 1);
 
-	ret += convert_ubase(output, num, "01234567", flags, wid, prec);
+	if (!(num == 0 && prec == 0))
+		ret += convert_ubase(output, num, "01234567",
+				flags, wid, prec);
 
 	if (NEG_FLAG == 1)
 	{
@@ -157,8 +157,6 @@ unsigned int convert_u(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 	char space = ' ';
 
-	if (prec == 0)
-		return (0);
 	if (len == LONG)
 		num = va_arg(args, unsigned long int);
 	else
@@ -166,7 +164,9 @@ unsigned int convert_u(va_list args, buffer_t *output,
 	if (len == SHORT)
 		num = (unsigned short)num;
 
-	ret += convert_ubase(output, num, "0123456789", flags, wid, prec);
+	if (!(num == 0 && prec == 0))
+		ret += convert_ubase(output, num, "0123456789",
+				flags, wid, prec);
 
 	if (NEG_FLAG == 1) /* Handle '-' flag */
 	{
