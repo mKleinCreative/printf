@@ -34,8 +34,6 @@ unsigned int convert_di(va_list args, buffer_t *output,
 	unsigned int ret = 0, count = 0;
 	char pad, space = ' ', neg = '-', plus = '+';
 
-	if (prec == 0)
-		return (0);
 	if (len == LONG)
 		d = va_arg(args, long int);
 	else
@@ -63,7 +61,9 @@ unsigned int convert_di(va_list args, buffer_t *output,
 	if (ZERO_FLAG == 0 && (PLUS_FLAG == 1 && d >= 0))
 		ret += _memcpy(output, &plus, 1);
 
-	ret += convert_sbase(output, d, "0123456789", flags, 0, prec);
+	if (!(d == 0 && prec == 0))
+		ret += convert_sbase(output, d, "0123456789",
+				flags, 0, prec);
 	if (NEG_FLAG == 1)
 	{
 		for (wid -= ret; wid > 0; wid--)
