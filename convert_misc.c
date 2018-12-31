@@ -32,17 +32,24 @@ unsigned int convert_c(va_list args, buffer_t *output,
 
 	c = va_arg(args, int);
 
-	(void)flags;
 	(void)prec;
 	(void)len;
 
-	while (wid > 1)
+	if (NEG_FLAG == 0)
 	{
-		ret += _memcpy(output, &width, 1);
-		wid--;
+		for (; wid > 1; wid--)
+			ret += _memcpy(output, &width, 1);
 	}
 
-	return (ret + _memcpy(output, &c, 1));
+	ret += _memcpy(output, &c, 1);
+
+	if (NEG_FLAG == 1)
+	{
+		for (wid -= ret; wid > 0; wid--)
+			ret += _memcpy(output, &width, 1);
+	}
+
+	return (ret);
 }
 
 /**
@@ -64,17 +71,24 @@ unsigned int convert_percent(va_list args, buffer_t *output,
 	unsigned int ret = 0;
 
 	(void)args;
-	(void)flags;
 	(void)prec;
 	(void)len;
 
-	while (wid > 1)
+	if (NEG_FLAG == 0)
 	{
-		ret += _memcpy(output, &width, 1);
-		wid--;
+		for (; wid > 1; wid--)
+			ret += _memcpy(output, &width, 1);
 	}
 
-	return (ret + _memcpy(output, &percent, 1));
+	ret += _memcpy(output, &percent, 1);
+
+	if (NEG_FLAG == 1)
+	{
+		for (wid -= ret; wid > 1; wid--)
+			ret += _memcpy(output, &width, 1);
+	}
+
+	return (ret);
 }
 
 /**

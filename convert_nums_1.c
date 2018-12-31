@@ -45,6 +45,10 @@ unsigned int convert_di(va_list args, buffer_t *output,
 
 	if (d < 0)
 		ret += _memcpy(output, &neg, 1);
+	else if (PLUS_FLAG == 1)
+		ret += _memcpy(output, &plus, 1);
+	else if (SPACE_FLAG == 1)
+		ret += _memcpy(output, &space, 1);
 
 	if (prec == -1 && (NEG_FLAG == 0))
 	{
@@ -54,11 +58,6 @@ unsigned int convert_di(va_list args, buffer_t *output,
 		for (wid -= (d <= 0) ? (count + 1) : count; wid > 0; wid--)
 			ret += _memcpy(output, &pad, 1);
 	}
-
-	else if (PLUS_FLAG == 1)
-		ret += _memcpy(output, &plus, 1);
-	else if (SPACE_FLAG == 1)
-		ret += _memcpy(output, &space, 1);
 
 	ret += convert_sbase(output, d, "0123456789", flags, 0, prec);
 

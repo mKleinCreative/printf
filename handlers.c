@@ -66,26 +66,33 @@ unsigned char handle_length(const char *modifier)
  * handle_width - Matches a width modifier with its corresponding value.
  * @args: A va_list of arguments.
  * @modifier: A pointer to a potential width modifier.
+ * @index: An index counter of the original format string.
  *
  * Return: If a width modifier is matched - its value.
  *         Otherwise - 0.
  */
-char handle_width(va_list args, const char *modifier)
+char handle_width(va_list args, const char *modifier, char *index)
 {
-	char value;
+	char value = 0;
 
-	if ((*modifier <= '0' || *modifier > '9') && (*modifier != '*'))
-		return (0);
-
-	if (*modifier == '*')
+	while ((*modifier > '0' && *modifier <= '9') || (*modifier == '*'))
 	{
-		value = va_arg(args, int);
-		if (value < 0)
-			return (0);
-		return (value);
+		(*index)++;
+
+		if (*modifier == '*')
+		{
+			value = va_arg(args, int);
+			if (value <= 0)
+				return (0);
+			return (value);
+		}
+
+		value *= 10;
+		value += (*modifier - '0');
+		modifier++;
 	}
 
-	return (*modifier - '0');
+	return (value);
 }
 
 /**
@@ -93,31 +100,51 @@ char handle_width(va_list args, const char *modifier)
  *                    its corresponding value.
  * @args: A va_list of arguments.
  * @modifier: A pointer to a potential precision modifier.
+ * @index: An index counter of the original format string.
  *
  * Return: If a precision modifier is matched - its vaue.
  *         If the precision modifier is empty, zero, or negative - 0.
  *         Otherwise - -1.
  */
-char handle_precision(va_list args, const char *modifier)
+char handle_precision(va_list args, const char *modifier, char *index)
 {
-	char value;
+	char value = 0;
 
 	if (*modifier != '.')
 		return (-1);
 
-	if ((*(modifier + 1) <= '0' || *(modifier + 1) > '9') &&
-	     *(modifier + 1) != '*')
-		return (0);
+	modifier++;
+	(*index)++;
 
-	if (*(modifier + 1) == '*')
+	if (*modifier == '0')
 	{
-		value = va_arg(args, int);
-		if (value < 0)
-			return (0);
-		return (value);
+		(*index)++;
+		return (-1);
 	}
 
-	return (*(modifier + 1) - '0');
+	if ((*modifier < '0' || *modifier > '9') &&
+	     *modifier != '*')
+		return (-1);
+
+	while ((*modifier > '0' && *modifier <= '9') ||
+	       (*modifier == '*'))
+	{
+		(*index)++;
+
+		if (*modifier == '*')
+		{
+			value = va_arg(args, int);
+			if (value <= 0)
+				return (0);
+			return (value);
+		}
+
+		value *= 10;
+		value += (*modifier - '0');
+		modifier++;
+	}
+
+	return (value);
 }
 
 /**
